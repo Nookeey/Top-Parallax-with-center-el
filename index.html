@@ -8,33 +8,23 @@
     <title>Document</title>
 
     <style>
-       #s1 { background: url('background-5.jpg') no-repeat top center; background-attachment: fixed; position: relative; height: 500px; }
+       #s1 { background: url('background-5.jpg') no-repeat top center; background-attachment: fixed; position: relative; height: 200px; }
        #s1 h1 { margin: 0; padding: 0; }
        #s2 { background: #ececec; height: 1000px; position: relative; z-index: 10; }
     </style>
 </head>
 <body>
 
-    <!--
-        *** DOCUMENTATION ***
-        Do sekcji pierwszej sekcji/diva ktora odpowiada z parallax,
-        dodajemy class="parallax-box" oraz musi ona posiadac style (
-            background: url('') no-repeat top center; 
-            background-attachment: fixed; position: relative; height: wysokosc w px;
-        )
-
-        Do elementu ktory ma byc cały czas na srodu ekranu podaczas
-        scrollowania, dodajemy id="plx-el"
-        
-        Do sekcji ktora znajduje sie zaraz po sekcji parllax dajemy 
-        style ( position: relative; z-index: 10; )
+    <!-- 
+        Wystarczy dodac 'elParallax' sekcji 
+        i 'elPlxCenter' do elementu ktory ma byc caly czas na srodku parallax'y
     -->
 
-    <section id="s1" class="parallax-box">
+    <section id="s1" elParallax>
         <div class="container">
             <div class="row text-center align-items-center">
                 <div class="col">
-                    <div id="plx-el">
+                    <div elPlxCenter>
                         <h1>Name</h1>
                     </div>
                 </div>
@@ -51,21 +41,24 @@
     
     <script>
         $(document).ready(function(){
-            
-            var parallax_boxH = $("body").find(".parallax-box").height();
-            var plx_elH = $("body").find(".parallax-box #plx-el").height();
-            mrTop = (parallax_boxH / 2) - (plx_elH / 2);
-            $("body").find(".parallax-box #plx-el").css({"margin-top": mrTop+"px"});
+
+            var elParallax = $("body").find('[elParallax]');
+            var elPlxCenter = $("body").find('[elPlxCenter]');
+            var elParallaxH = elParallax.height();
+            var elPlxCenterH = elPlxCenter.height();
+
+            elParallaxMrTop = (elParallaxH / 2) - (elPlxCenterH / 2);
+            elPlxCenter.css({"margin-top": elParallaxMrTop+"px"});
         
-            function setElPosition(a) {
-                mrTop = ( (parallax_boxH + a) / 2) - (plx_elH / 2);
-                $("body").find(".parallax-box #plx-el").css({"margin-top": mrTop+"px"});
+            function setElPlxCenterlPosition(sTop) {
+                elParallaxMrTop = ( (elParallaxH + sTop) / 2) - (elPlxCenterH / 2);
+                elPlxCenter.css({"margin-top": elParallaxMrTop+"px"});
             }
             
             $(window).scroll(function() {
                 var sTop = $(window).scrollTop();
-                setElPosition(sTop);
-                $("#s1").css({"background-position-y": "-"+sTop/2+"px"});
+                setElPlxCenterlPosition(sTop);
+                elParallax.css({"background-position-y": "-"+sTop/2+"px"});
             });
         
         });
